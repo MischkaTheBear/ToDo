@@ -9,12 +9,17 @@
 import UIKit
 
 class TodoViewController: UITableViewController {
+    let defaults = UserDefaults.standard
+    var listItemArray = ["Red", "Green", "Yellow", "Blue", "Purple", "Orange", "Violet", "Taupe"]
     var cellSelected : Int = 0
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        if let items = defaults.array(forKey: "ListItemArray") as? [String] {
+            listItemArray = items
+        }
     }
-    var listItemArray = ["Red", "Green", "Yellow", "Blue", "Purple", "Orange", "Violet", "Taupe"]
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return listItemArray.count
     }
@@ -40,6 +45,7 @@ class TodoViewController: UITableViewController {
         let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
             //actions after click on alert
             self.listItemArray.append(textField.text!)
+            self.defaults.set(self.listItemArray, forKey: "ListItemArray")
             self.tableView.reloadData()
             
         }
